@@ -8,7 +8,7 @@
     "start": "json-server --watch data/db.json",
     "build-dev": "webpack --config webpack.config.js --watch"
   },
-  "author": "",
+  "author": "CP",
   "license": "ISC",
   "dependencies": {
     "babel-loader": "^8.1.0",
