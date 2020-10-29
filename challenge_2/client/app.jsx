@@ -7,8 +7,23 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-
+      data: [],
     }
+    this.getCurrentPrice = this.getCurrentPrice.bind(this);
+  }
+
+  componentDidMount() {
+    this.getCurrentPrice();
+  }
+
+  getCurrentPrice() {
+    axios('http://localhost:3000/currentprice')
+    .then((response) => {
+      const { data } = response;
+      this.setState({
+        data: data,
+      })
+    })
   }
   render() {
     return(
