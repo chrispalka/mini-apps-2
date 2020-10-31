@@ -7,13 +7,14 @@ const PORT = 3000;
 
 const app = express();
 
-const coinDesk = 'https://api.coindesk.com/v1/bpi/historical/close.json?start=2020-10-26&end=2020-10-30'
 
 app.use(cors());
 
 app.use(express.static(path.join(__dirname, './public')));
 
-app.get('/currentprice', (req, res) => {
+app.get('/currentprice/:date', (req, res) => {
+  const { date } = req.params
+  const coinDesk = `https://api.coindesk.com/v1/bpi/historical/close.json?${date}`;
   axios(coinDesk)
   .then((response) => {
     const { data } = response;

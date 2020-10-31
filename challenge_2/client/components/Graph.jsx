@@ -5,19 +5,21 @@ const moment = require('moment');
 class Graph extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      chart: null,
+    }
   }
+
   chartRef = React.createRef();
+
   componentDidMount() {
     const myChartRef = this.chartRef.current.getContext('2d');
-    const { data: { bpi } } = this.props;
-    const dates = Object.keys(bpi)
-    const prices = Object.values(bpi)
+    const { labels, prices } = this.props;
 
-
-    new Chart(myChartRef, {
+    let myChart = new Chart(myChartRef, {
       type: 'line',
       data: {
-        labels: [...dates],
+        labels: [...labels],
         datasets: [{
           label: 'BTC Price over time',
           data: [...prices],
@@ -48,7 +50,7 @@ class Graph extends React.Component {
             }
           }],
         },
-        x: {
+        xAxes: {
           type: 'time',
           time: {
             unit: 'month'
@@ -56,7 +58,21 @@ class Graph extends React.Component {
         }
       }
     })
+    this.setState({ chart: myChart })
   }
+
+  componentWillReceiveProps(nextProps, nextContext) {
+    // update chart according to prop change
+    this.state.chart.data.labels = (nextProps.labels)
+    // this.state.chart.data.datasets.data = (nextProps.prices)
+    // this.state.chart.update();
+
+    this.state.chart.data.datasets.forEach((dataset) => {
+      dataset.data.push(nextProps.prices);
+      this.state.chart.update();
+    })
+  }
+
 
   render() {
     return (
