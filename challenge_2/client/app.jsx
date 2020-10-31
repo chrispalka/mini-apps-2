@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import Graph from './components/Graph.jsx';
 
 const axios = require('axios');
 
@@ -7,33 +8,45 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      data: [],
+      isLoaded: false,
+      data: null,
     }
     this.getCurrentPrice = this.getCurrentPrice.bind(this);
   }
+
 
   componentDidMount() {
     this.getCurrentPrice();
   }
 
+
   getCurrentPrice() {
-    axios('http://localhost:3000/currentprice')
-    .then((response) => {
-      const { data } = response;
-      this.setState({
-        data: data,
+    const url = 'http://localhost:3000/currentprice'
+    axios(url)
+      .then((response) => {
+        const { data } = response;
+        this.setState({
+          isLoaded: true,
+          data: data,
+        })
       })
-    })
   }
   render() {
-    return(
-      <h1>hi</h1>
+    const { data, isLoaded } = this.state;
+    return (
+      <>
+      {
+        isLoaded ? (
+          <Graph data={ data } />
+        )
+          : <div>Loading...</div>
+      }
+      </>
     )
   }
-
 }
 
-ReactDOM.render(
-  <App />,
-  document.getElementById('app')
-)
+  ReactDOM.render(
+    <App />,
+    document.getElementById('app')
+  )
