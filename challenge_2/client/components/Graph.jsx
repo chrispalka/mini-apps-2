@@ -12,13 +12,12 @@ class Graph extends React.Component {
 
   chartRef = React.createRef();
 
-  componentWillReceiveProps(nextProps, nextContext) {
+  componentWillReceiveProps(nextProps) {
     this.state.chart.data.labels = nextProps.labels
     this.state.chart.data.datasets.forEach((dataset) => {
       dataset.data = nextProps.prices
     })
     this.state.chart.update();
-    console.log(this.state.chart.data.datasets)
   }
 
   componentDidMount() {
