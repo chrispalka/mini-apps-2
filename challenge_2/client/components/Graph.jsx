@@ -12,6 +12,15 @@ class Graph extends React.Component {
 
   chartRef = React.createRef();
 
+  componentWillReceiveProps(nextProps, nextContext) {
+    this.state.chart.data.labels = nextProps.labels
+    this.state.chart.data.datasets.forEach((dataset) => {
+      dataset.data = nextProps.prices
+    })
+    this.state.chart.update();
+    console.log(this.state.chart.data.datasets)
+  }
+
   componentDidMount() {
     const myChartRef = this.chartRef.current.getContext('2d');
     const { labels, prices } = this.props;
@@ -61,17 +70,7 @@ class Graph extends React.Component {
     this.setState({ chart: myChart })
   }
 
-  componentWillReceiveProps(nextProps, nextContext) {
-    // update chart according to prop change
-    this.state.chart.data.labels = (nextProps.labels)
-    // this.state.chart.data.datasets.data = (nextProps.prices)
-    // this.state.chart.update();
 
-    this.state.chart.data.datasets.forEach((dataset) => {
-      dataset.data.push(nextProps.prices);
-      this.state.chart.update();
-    })
-  }
 
 
   render() {
