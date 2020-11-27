@@ -1,7 +1,5 @@
-const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const path = require('path');
-
 
 const SRC_DIR = path.join(__dirname, 'client');
 const DIST_DIR = path.join(__dirname, 'public');
@@ -40,12 +38,12 @@ module.exports = {
         test: /\.(png|jpg|gif|svg|eot|ttf|woff|woff2)$/,
         loader: 'url-loader',
         options: {
-          limit: 10000
-        }
-      }
+          limit: 10000,
+        },
+      },
     ],
   },
   resolve: {
     extensions: ['.js', '.jsx'],
-  }
-}
+  },
+};

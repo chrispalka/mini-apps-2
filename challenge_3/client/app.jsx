@@ -3,10 +3,10 @@ import ReactDOM from 'react-dom';
 import styled from 'styled-components';
 import Container from 'react-bootstrap/Container';
 import InputGroup from 'react-bootstrap/InputGroup';
-import 'bootstrap';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const MainContainer = styled(Container)`
-  width: 400px;
+  width: 350px;
 `;
 
 const ButtonContainer = styled(Container)`
@@ -14,14 +14,23 @@ background-color: slategrey;
 text-align: center;
 margin: auto;
 border-radius: 1em;
+.btn-secondary {
+  margin-bottom: 10px;
+  padding: 30px;
+}
 .btn-group-vertical {
   padding: 10px;
-  margin: 2px;
+  margin: auto;
 }
 `;
 
 const SecondaryContainer = styled(Container)`
-
+  .go-button {
+    margin: 50px;
+    padding: 50px;
+    font-size:20pt;
+    border-radius: 5em;
+  }
 `;
 
 const Input = styled(InputGroup)`
