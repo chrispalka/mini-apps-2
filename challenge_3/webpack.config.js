@@ -1,4 +1,5 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+
 const path = require('path');
 
 const SRC_DIR = path.join(__dirname, 'client');

@@ -5,68 +5,81 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import styled, { createGlobalStyle } from 'styled-components';
 import Container from 'react-bootstrap/Container';
-import InputGroup from 'react-bootstrap/InputGroup';
 import Alert from 'react-bootstrap/Alert';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Scorecard from './Scorecard';
+import 'fontsource-nerko-one';
+import 'typeface-fjalla-one';
 
 const GlobalStyle = createGlobalStyle`
   body {
-    background-color: darkorchid;
+    background-color: black;
+    font-family: 'Fjalla One';
+  }
+  h1 {
+    text-align: center;
+    margin-top: 10rem;
+    color: hotpink;
   }
 `;
 
 const MainContainer = styled(Container)`
-body {
-  background-color: slategrey;
-}
+  margin-top: 1.5%;
+  body {
+    background-color: slategrey;
+  }
   width: 350px;
 `;
 
 const ScoreContainer = styled(Container)`
   text-align: center;
   margin: auto;
-  border-radius: 1em;
+  margin-top: 2%;
+  table.table-bordered > tbody > tr > td > td {
+    height: 30px;
+    width: 30px;
+    padding: 2px;
+  }
+  table.table-bordered {
+    border-color: white;
+    border-width: 2px;
+    border-style: solid;
+  }
+  button {
+    background-color: #363d40;
+    margin-bottom: 2rem;
+  }
+  button:hover {
+    background-color: hotpink;
+  }
 `;
 
 const ButtonContainer = styled(Container)`
-background-color: slategrey;
+background-color: #343A40;
 text-align: center;
 margin: auto;
 border-radius: 1em;
+border-color: white;
+border-width: 1px;
+border-style: solid;
 .btn-secondary {
   margin-bottom: 10px;
   padding: 30px;
   background-color: #363d40;
 }
-
+.btn-secondary:hover {
+  background-color: hotpink;
+}
 .btn-group-vertical {
   padding: 10px;
   margin: auto;
 }
 `;
 
-const SecondaryContainer = styled(Container)`
-  .go-button {
-    margin: 50px;
-    padding: 50px;
-    font-size:20pt;
-    border-radius: 5em;
-  }
-`;
-
-const Input = styled(InputGroup)`
-  .form-control {
-    margin-top: 10px;
-    border-radius: 5em;
-  }
-`;
-
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      displayValue: '0',
       roundOne: 0,
       roundTwo: 0,
       roundThree: 0,
@@ -74,63 +87,50 @@ class App extends Component {
       count: 1,
       spare: false,
       strike: false,
-      1: '',
-      2: '',
-      frameOneScore: 0,
-      3: '',
-      4: '',
-      frameTwoScore: 0,
-      5: '',
-      6: '',
-      frameThreeScore: 0,
-      7: '',
-      8: '',
-      frameFourScore: 0,
-      9: '',
-      10: '',
-      frameFiveScore: 0,
-      11: '',
-      12: '',
-      frameSixScore: 0,
-      13: '',
-      14: '',
-      frameSevenScore: 0,
-      15: '',
-      16: '',
-      frameEightScore: 0,
-      17: '',
-      18: '',
-      frameNineScore: 0,
-      19: '',
-      20: '',
-      21: '',
+      throwOne: '',
+      throwTwo: '',
+      frameOneScore: '',
+      throwThree: '',
+      throwFour: '',
+      frameTwoScore: '',
+      throwFive: '',
+      throwSix: '',
+      frameThreeScore: '',
+      throwSeven: '',
+      throwEight: '',
+      frameFourScore: '',
+      throwNine: '',
+      throwTen: '',
+      frameFiveScore: '',
+      throwEleven: '',
+      throwTwelve: '',
+      frameSixScore: '',
+      throwThirteen: '',
+      throwFourteen: '',
+      frameSevenScore: '',
+      throwFifteen: '',
+      throwSixteen: '',
+      frameEightScore: '',
+      throwSeventeen: '',
+      throwEighteen: '',
+      frameNineScore: '',
+      throwNineteen: '',
+      throwTwenty: '',
+      throwTwentyOne: '',
+      frameTenScore: '',
+      finalRoundStrikeOne: '',
+      finalRoundStrikeTwo: '',
+      finalRoundStrikeThree: '',
     };
-    this.handleInputDigit = this.handleInputDigit.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.onChange = this.onChange.bind(this);
+    this.handleNewGame = this.handleNewGame.bind(this);
   }
 
-  handleInputDigit(digit) {
-    const { displayValue } = this.state;
-    this.setState({
-      displayValue: displayValue === '0' ? digit : displayValue + digit.toString(),
-    });
-  }
-
-  handleSubmit() {
+  handleSubmit(digit) {
+    const displayValue = digit.toString();
     const {
-      displayValue,
       spare,
       strike,
-      frameOneScore,
-      frameTwoScore,
-      frameThreeScore,
-      frameFourScore,
-      frameFiveScore,
-      frameSixScore,
-      frameSevenScore,
-      frameEightScore,
-      frameNineScore,
     } = this.state;
     let {
       score,
@@ -138,6 +138,10 @@ class App extends Component {
       roundOne,
       roundTwo,
       roundThree,
+      finalRoundStrikeOne,
+      finalRoundStrikeTwo,
+      finalRoundStrikeThree,
+      frameTenScore,
     } = this.state;
     // eslint-disable-next-line default-case
     switch (count) {
@@ -145,6 +149,7 @@ class App extends Component {
         if (displayValue === '10') {
           console.log('STRIKE');
           this.setState({
+            throwOne: 'X',
             strike: true,
             roundOne: roundOne += Number(displayValue),
             displayValue: '0',
@@ -152,17 +157,18 @@ class App extends Component {
           });
         } else {
           this.setState({
+            throwOne: Number(displayValue),
             roundOne: roundOne += Number(displayValue),
             displayValue: '0',
             count: count += 1,
           });
         }
-        this.setState({ 1: Number(displayValue) });
         break;
       case 2:
         if (10 - Number(displayValue) === roundOne) {
           console.log('SPARE');
           this.setState({
+            throwTwo: '/',
             spare: true,
             score: score += 10,
             displayValue: '0',
@@ -170,6 +176,7 @@ class App extends Component {
           });
         } else {
           this.setState({
+            throwTwo: Number(displayValue),
             roundTwo: roundTwo += Number(displayValue),
             score: score += (roundTwo + roundOne),
             frameOneScore: score,
@@ -179,7 +186,6 @@ class App extends Component {
           });
         }
         this.setState({
-          2: Number(displayValue),
           roundOne: 0,
           roundTwo: 0,
         });
@@ -188,6 +194,7 @@ class App extends Component {
         if (displayValue === '10') {
           console.log('STRIKE');
           this.setState({
+            throwThree: 'X',
             strike: true,
             roundOne: roundOne += Number(displayValue),
             displayValue: '0',
@@ -195,12 +202,14 @@ class App extends Component {
           });
         } else if (strike) {
           this.setState({
+            throwThree: Number(displayValue),
             roundTwo: roundTwo += Number(displayValue),
             displayValue: '0',
             count: count += 1,
           });
         } else if (spare) {
           this.setState({
+            throwThree: Number(displayValue),
             roundOne: roundOne += Number(displayValue),
             frameOneScore: roundOne + score,
             score: score += roundOne,
@@ -210,17 +219,18 @@ class App extends Component {
           });
         } else {
           this.setState({
+            throwThree: Number(displayValue),
             roundOne: roundOne += Number(displayValue),
             displayValue: '0',
             count: count += 1,
           });
         }
-        this.setState({ 3: Number(displayValue) });
         break;
       case 4:
         if (10 - Number(displayValue) === roundOne) {
           console.log('SPARE');
           this.setState({
+            throwFour: '/',
             spare: true,
             score: score += 10,
             displayValue: '0',
@@ -228,9 +238,10 @@ class App extends Component {
           });
         } else if (strike) {
           this.setState({
+            throwFour: Number(displayValue),
             roundThree: roundThree += Number(displayValue),
             score: score += roundOne + (roundTwo + roundThree) * 2,
-            frameOneScore: frameOneScore + (roundOne + roundTwo + roundThree),
+            frameOneScore: (roundOne + roundTwo + roundThree),
             frameTwoScore: score,
             displayValue: '0',
             count: count += 1,
@@ -238,6 +249,7 @@ class App extends Component {
           });
         } else {
           this.setState({
+            throwFour: Number(displayValue),
             roundTwo: roundTwo += Number(displayValue),
             score: score += (roundTwo + roundOne),
             frameTwoScore: score,
@@ -246,7 +258,6 @@ class App extends Component {
           });
         }
         this.setState({
-          4: Number(displayValue),
           roundOne: 0,
           roundTwo: 0,
           roundThree: 0,
@@ -256,6 +267,7 @@ class App extends Component {
         if (displayValue === '10') {
           console.log('STRIKE');
           this.setState({
+            throwFive: 'X',
             strike: true,
             roundOne: roundOne += Number(displayValue),
             displayValue: '0',
@@ -263,14 +275,16 @@ class App extends Component {
           });
         } else if (strike) {
           this.setState({
+            throwFive: Number(displayValue),
             roundTwo: roundTwo += Number(displayValue),
             displayValue: '0',
             count: count += 1,
           });
         } else if (spare) {
           this.setState({
+            throwFive: Number(displayValue),
             roundOne: roundOne += Number(displayValue),
-            frameTwoScore: frameTwoScore + (roundOne + score),
+            frameTwoScore: (roundOne + score),
             score: score += roundOne,
             displayValue: '0',
             count: count += 1,
@@ -278,17 +292,18 @@ class App extends Component {
           });
         } else {
           this.setState({
+            throwFive: Number(displayValue),
             roundOne: roundOne += Number(displayValue),
             displayValue: '0',
             count: count += 1,
           });
         }
-        this.setState({ 5: Number(displayValue) });
         break;
       case 6:
         if (10 - Number(displayValue) === roundOne) {
           console.log('SPARE');
           this.setState({
+            throwSix: '/',
             spare: true,
             score: score += 10,
             displayValue: '0',
@@ -296,6 +311,7 @@ class App extends Component {
           });
         } else if (strike) {
           this.setState({
+            throwSix: Number(displayValue),
             roundThree: roundThree += Number(displayValue),
             score: score += roundOne + (roundTwo + roundThree) * 2,
             frameTwoScore: score - (roundTwo + roundThree),
@@ -306,16 +322,16 @@ class App extends Component {
           });
         } else {
           this.setState({
+            throwSix: Number(displayValue),
             roundTwo: roundTwo += Number(displayValue),
             score: score += (roundTwo + roundOne),
-            frameOneScore: score,
+            frameThreeScore: score,
             displayValue: '0',
             lastValue: 0,
             count: count += 1,
           });
         }
         this.setState({
-          6: Number(displayValue),
           roundOne: 0,
           roundTwo: 0,
           roundThree: 0,
@@ -325,6 +341,7 @@ class App extends Component {
         if (displayValue === '10') {
           console.log('STRIKE');
           this.setState({
+            throwSeven: 'X',
             strike: true,
             roundOne: roundOne += Number(displayValue),
             displayValue: '0',
@@ -332,14 +349,16 @@ class App extends Component {
           });
         } else if (strike) {
           this.setState({
+            throwSeven: Number(displayValue),
             roundTwo: roundTwo += Number(displayValue),
             displayValue: '0',
             count: count += 1,
           });
         } else if (spare) {
           this.setState({
+            throwSeven: Number(displayValue),
             roundOne: roundOne += Number(displayValue),
-            frameThreeScore: frameThreeScore + (roundOne + score),
+            frameThreeScore: (roundOne + score),
             score: score += roundOne,
             displayValue: '0',
             count: count += 1,
@@ -347,17 +366,18 @@ class App extends Component {
           });
         } else {
           this.setState({
+            throwSeven: Number(displayValue),
             roundOne: roundOne += Number(displayValue),
             displayValue: '0',
             count: count += 1,
           });
         }
-        this.setState({ 7: Number(displayValue) });
         break;
       case 8:
         if (10 - Number(displayValue) === roundOne) {
           console.log('SPARE');
           this.setState({
+            throwEight: '/',
             spare: true,
             score: score += 10,
             displayValue: '0',
@@ -365,6 +385,7 @@ class App extends Component {
           });
         } else if (strike) {
           this.setState({
+            throwEight: Number(displayValue),
             roundThree: roundThree += Number(displayValue),
             score: score += roundOne + (roundTwo + roundThree) * 2,
             frameThreeScore: score - (roundTwo + roundThree),
@@ -375,16 +396,16 @@ class App extends Component {
           });
         } else {
           this.setState({
+            throwEight: Number(displayValue),
             roundTwo: roundTwo += Number(displayValue),
             score: score += (roundTwo + roundOne),
-            frameFourScore: frameFourScore + score,
+            frameFourScore: score,
             displayValue: '0',
             lastValue: 0,
             count: count += 1,
           });
         }
         this.setState({
-          8: Number(displayValue),
           roundOne: 0,
           roundTwo: 0,
           roundThree: 0,
@@ -394,6 +415,7 @@ class App extends Component {
         if (displayValue === '10') {
           console.log('STRIKE');
           this.setState({
+            throwNine: 'X',
             strike: true,
             roundOne: roundOne += Number(displayValue),
             displayValue: '0',
@@ -401,14 +423,16 @@ class App extends Component {
           });
         } else if (strike) {
           this.setState({
+            throwNine: Number(displayValue),
             roundTwo: roundTwo += Number(displayValue),
             displayValue: '0',
             count: count += 1,
           });
         } else if (spare) {
           this.setState({
+            throwNine: Number(displayValue),
             roundOne: roundOne += Number(displayValue),
-            frameFourScore: frameFourScore + (roundOne + score),
+            frameFourScore: (roundOne + score),
             score: score += roundOne,
             displayValue: '0',
             count: count += 1,
@@ -416,17 +440,18 @@ class App extends Component {
           });
         } else {
           this.setState({
+            throwNine: Number(displayValue),
             roundOne: roundOne += Number(displayValue),
             displayValue: '0',
             count: count += 1,
           });
         }
-        this.setState({ 9: Number(displayValue) });
         break;
       case 10:
         if (10 - Number(displayValue) === roundOne) {
           console.log('SPARE');
           this.setState({
+            throwTen: '/',
             spare: true,
             score: score += 10,
             displayValue: '0',
@@ -434,6 +459,7 @@ class App extends Component {
           });
         } else if (strike) {
           this.setState({
+            throwTen: Number(displayValue),
             roundThree: roundThree += Number(displayValue),
             score: score += roundOne + (roundTwo + roundThree) * 2,
             frameFourScore: score - (roundTwo + roundThree),
@@ -444,6 +470,7 @@ class App extends Component {
           });
         } else {
           this.setState({
+            throwTen: Number(displayValue),
             roundTwo: roundTwo += Number(displayValue),
             score: score += (roundTwo + roundOne),
             frameFiveScore: score,
@@ -453,7 +480,6 @@ class App extends Component {
           });
         }
         this.setState({
-          10: Number(displayValue),
           roundOne: 0,
           roundTwo: 0,
           roundThree: 0,
@@ -463,6 +489,7 @@ class App extends Component {
         if (displayValue === '10') {
           console.log('STRIKE');
           this.setState({
+            throwEleven: 'X',
             strike: true,
             roundOne: roundOne += Number(displayValue),
             displayValue: '0',
@@ -470,14 +497,16 @@ class App extends Component {
           });
         } else if (strike) {
           this.setState({
+            throwEleven: Number(displayValue),
             roundTwo: roundTwo += Number(displayValue),
             displayValue: '0',
             count: count += 1,
           });
         } else if (spare) {
           this.setState({
+            throwEleven: Number(displayValue),
             roundOne: roundOne += Number(displayValue),
-            frameFiveScore: frameFiveScore + (roundOne + score),
+            frameFiveScore: (roundOne + score),
             score: score += roundOne,
             displayValue: '0',
             count: count += 1,
@@ -485,17 +514,18 @@ class App extends Component {
           });
         } else {
           this.setState({
+            throwEleven: Number(displayValue),
             roundOne: roundOne += Number(displayValue),
             displayValue: '0',
             count: count += 1,
           });
         }
-        this.setState({ 11: Number(displayValue) });
         break;
       case 12:
         if (10 - Number(displayValue) === roundOne) {
           console.log('SPARE');
           this.setState({
+            throwTwelve: '/',
             spare: true,
             score: score += 10,
             displayValue: '0',
@@ -503,6 +533,7 @@ class App extends Component {
           });
         } else if (strike) {
           this.setState({
+            throwTwelve: Number(displayValue),
             roundThree: roundThree += Number(displayValue),
             score: score += roundOne + (roundTwo + roundThree) * 2,
             frameFiveScore: score - (roundTwo + roundThree),
@@ -513,16 +544,16 @@ class App extends Component {
           });
         } else {
           this.setState({
+            throwTwelve: Number(displayValue),
             roundTwo: roundTwo += Number(displayValue),
             score: score += (roundTwo + roundOne),
-            frameSixScore: frameSixScore + score,
+            frameSixScore: score,
             displayValue: '0',
             lastValue: 0,
             count: count += 1,
           });
         }
         this.setState({
-          12: Number(displayValue),
           roundOne: 0,
           roundTwo: 0,
           roundThree: 0,
@@ -532,6 +563,7 @@ class App extends Component {
         if (displayValue === '10') {
           console.log('STRIKE');
           this.setState({
+            throwThirteen: 'X',
             strike: true,
             roundOne: roundOne += Number(displayValue),
             displayValue: '0',
@@ -539,14 +571,16 @@ class App extends Component {
           });
         } else if (strike) {
           this.setState({
+            throwThirteen: Number(displayValue),
             roundTwo: roundTwo += Number(displayValue),
             displayValue: '0',
             count: count += 1,
           });
         } else if (spare) {
           this.setState({
+            throwThirteen: Number(displayValue),
             roundOne: roundOne += Number(displayValue),
-            frameSixScore: frameSixScore + (roundOne + score),
+            frameSixScore: (roundOne + score),
             score: score += roundOne,
             displayValue: '0',
             count: count += 1,
@@ -554,17 +588,18 @@ class App extends Component {
           });
         } else {
           this.setState({
+            throwThirteen: Number(displayValue),
             roundOne: roundOne += Number(displayValue),
             displayValue: '0',
             count: count += 1,
           });
         }
-        this.setState({ 13: Number(displayValue) });
         break;
       case 14:
         if (10 - Number(displayValue) === roundOne) {
           console.log('SPARE');
           this.setState({
+            throwFourteen: '/',
             spare: true,
             score: score += 10,
             displayValue: '0',
@@ -572,6 +607,7 @@ class App extends Component {
           });
         } else if (strike) {
           this.setState({
+            throwFourteen: Number(displayValue),
             roundThree: roundThree += Number(displayValue),
             score: score += roundOne + (roundTwo + roundThree) * 2,
             frameSixScore: score - (roundTwo + roundThree),
@@ -582,16 +618,16 @@ class App extends Component {
           });
         } else {
           this.setState({
+            throwFourteen: Number(displayValue),
             roundTwo: roundTwo += Number(displayValue),
             score: score += (roundTwo + roundOne),
-            frameSevenScore: frameSevenScore + score,
+            frameSevenScore: score,
             displayValue: '0',
             lastValue: 0,
             count: count += 1,
           });
         }
         this.setState({
-          14: Number(displayValue),
           roundOne: 0,
           roundTwo: 0,
           roundThree: 0,
@@ -601,6 +637,7 @@ class App extends Component {
         if (displayValue === '10') {
           console.log('STRIKE');
           this.setState({
+            throwFifteen: 'X',
             strike: true,
             roundOne: roundOne += Number(displayValue),
             displayValue: '0',
@@ -608,14 +645,16 @@ class App extends Component {
           });
         } else if (strike) {
           this.setState({
+            throwFifteen: Number(displayValue),
             roundTwo: roundTwo += Number(displayValue),
             displayValue: '0',
             count: count += 1,
           });
         } else if (spare) {
           this.setState({
+            throwFifteen: Number(displayValue),
             roundOne: roundOne += Number(displayValue),
-            frameSevenScore: frameSevenScore + (roundOne + score),
+            frameSevenScore: (roundOne + score),
             score: score += roundOne,
             displayValue: '0',
             count: count += 1,
@@ -623,17 +662,18 @@ class App extends Component {
           });
         } else {
           this.setState({
+            throwFifteen: Number(displayValue),
             roundOne: roundOne += Number(displayValue),
             displayValue: '0',
             count: count += 1,
           });
         }
-        this.setState({ 15: Number(displayValue) });
         break;
       case 16:
         if (10 - Number(displayValue) === roundOne) {
           console.log('SPARE');
           this.setState({
+            throwSixteen: '/',
             spare: true,
             score: score += 10,
             displayValue: '0',
@@ -641,6 +681,7 @@ class App extends Component {
           });
         } else if (strike) {
           this.setState({
+            throwSixteen: Number(displayValue),
             roundThree: roundThree += Number(displayValue),
             score: score += roundOne + (roundTwo + roundThree) * 2,
             frameSevenScore: score - (roundTwo + roundThree),
@@ -651,16 +692,16 @@ class App extends Component {
           });
         } else {
           this.setState({
+            throwSixteen: Number(displayValue),
             roundTwo: roundTwo += Number(displayValue),
             score: score += (roundTwo + roundOne),
-            frameEightScore: frameEightScore + score,
+            frameEightScore: score,
             displayValue: '0',
             lastValue: 0,
             count: count += 1,
           });
         }
         this.setState({
-          16: Number(displayValue),
           roundOne: 0,
           roundTwo: 0,
           roundThree: 0,
@@ -670,6 +711,7 @@ class App extends Component {
         if (displayValue === '10') {
           console.log('STRIKE');
           this.setState({
+            throwSeventeen: 'X',
             strike: true,
             roundOne: roundOne += Number(displayValue),
             displayValue: '0',
@@ -677,14 +719,16 @@ class App extends Component {
           });
         } else if (strike) {
           this.setState({
+            throwSeventeen: Number(displayValue),
             roundTwo: roundTwo += Number(displayValue),
             displayValue: '0',
             count: count += 1,
           });
         } else if (spare) {
           this.setState({
+            throwSeventeen: Number(displayValue),
             roundOne: roundOne += Number(displayValue),
-            frameEightScore: frameEightScore + (roundOne + score),
+            frameEightScore: (roundOne + score),
             score: score += roundOne,
             displayValue: '0',
             count: count += 1,
@@ -692,17 +736,18 @@ class App extends Component {
           });
         } else {
           this.setState({
+            throwSeventeen: Number(displayValue),
             roundOne: roundOne += Number(displayValue),
             displayValue: '0',
             count: count += 1,
           });
         }
-        this.setState({ 17: Number(displayValue) });
         break;
       case 18:
         if (10 - Number(displayValue) === roundOne) {
           console.log('SPARE');
           this.setState({
+            throwEighteen: '/',
             spare: true,
             score: score += 10,
             displayValue: '0',
@@ -710,6 +755,7 @@ class App extends Component {
           });
         } else if (strike) {
           this.setState({
+            throwEighteen: Number(displayValue),
             roundThree: roundThree += Number(displayValue),
             score: score += roundOne + (roundTwo + roundThree) * 2,
             frameEightScore: score - (roundTwo + roundThree),
@@ -720,16 +766,16 @@ class App extends Component {
           });
         } else {
           this.setState({
+            throwEighteen: Number(displayValue),
             roundTwo: roundTwo += Number(displayValue),
             score: score += (roundTwo + roundOne),
-            frameNineScore: frameNineScore + score,
+            frameNineScore: score,
             displayValue: '0',
             lastValue: 0,
             count: count += 1,
           });
         }
         this.setState({
-          18: Number(displayValue),
           roundOne: 0,
           roundTwo: 0,
           roundThree: 0,
@@ -739,21 +785,24 @@ class App extends Component {
         if (displayValue === '10') {
           console.log('STRIKE');
           this.setState({
+            throwNineteen: 'X',
             strike: true,
-            roundOne: roundOne += Number(displayValue),
+            finalRoundStrikeOne: finalRoundStrikeOne += Number(displayValue),
             displayValue: '0',
             count: count += 1,
           });
         } else if (strike) {
           this.setState({
+            throwNineteen: Number(displayValue),
             roundTwo: roundTwo += Number(displayValue),
             displayValue: '0',
             count: count += 1,
           });
         } else if (spare) {
           this.setState({
+            throwNineteen: Number(displayValue),
             roundOne: roundOne += Number(displayValue),
-            frameNineScore: frameNineScore + (roundOne + score),
+            frameNineScore: (roundOne + score),
             score: score += roundOne,
             displayValue: '0',
             count: count += 1,
@@ -761,18 +810,20 @@ class App extends Component {
           });
         } else {
           this.setState({
+            throwNineteen: Number(displayValue),
             roundOne: roundOne += Number(displayValue),
             displayValue: '0',
             count: count += 1,
           });
         }
-        this.setState({ 19: Number(displayValue) });
         break;
       case 20:
         if (displayValue === '10') {
           console.log('STRIKE');
           this.setState({
+            throwTwenty: 'X',
             strike: true,
+            finalRoundStrikeTwo: finalRoundStrikeTwo += Number(displayValue),
             roundThree: roundThree += Number(displayValue),
             displayValue: '0',
             count: count += 1,
@@ -780,6 +831,7 @@ class App extends Component {
         } else if (10 - Number(displayValue) === roundOne) {
           console.log('SPARE');
           this.setState({
+            throwTwenty: '/',
             spare: true,
             score: score += 10,
             displayValue: '0',
@@ -787,6 +839,7 @@ class App extends Component {
           });
         } else if (strike) {
           this.setState({
+            throwTwenty: Number(displayValue),
             roundThree: roundThree += Number(displayValue),
             score: score += roundOne + (roundTwo + roundThree) * 2,
             frameNineScore: score - (roundTwo + roundThree),
@@ -796,70 +849,107 @@ class App extends Component {
           });
           console.log(`GAME OVER: SCORE: ${score}`);
         }
-        this.setState({ 20: Number(displayValue) });
         break;
       case 21:
-        this.setState({
-          strike: true,
-          displayValue: '0',
-          score: score += (roundOne + roundTwo + roundThree + Number(displayValue)),
-        });
+        if (displayValue === '10') {
+          this.setState({
+            throwTwentyOne: 'X',
+            finalRoundStrikeThree: finalRoundStrikeThree += Number(displayValue),
+            frameTenScore:
+              score += Number(finalRoundStrikeOne)
+              + Number(finalRoundStrikeTwo)
+              + Number(finalRoundStrikeThree),
+            score: frameTenScore,
+          });
+        } else {
+          this.setState({
+            throwTwentyOne: Number(displayValue),
+            displayValue: '0',
+            score: score += (roundOne + roundTwo + roundThree + Number(displayValue)),
+            frameTenScore: score,
+          });
+        }
         console.log(`GAME OVER: SCORE: ${score}`);
-        this.setState({ 21: Number(displayValue) });
         break;
     }
   }
 
-  onChange(e) {
+  handleNewGame() {
     this.setState({
-      displayValue: e.target.displayValue,
+      roundOne: 0,
+      roundTwo: 0,
+      roundThree: 0,
+      score: 0,
+      count: 1,
+      spare: false,
+      strike: false,
+      throwOne: '',
+      throwTwo: '',
+      frameOneScore: '',
+      throwThree: '',
+      throwFour: '',
+      frameTwoScore: '',
+      throwFive: '',
+      throwSix: '',
+      frameThreeScore: '',
+      throwSeven: '',
+      throwEight: '',
+      frameFourScore: '',
+      throwNine: '',
+      throwTen: '',
+      frameFiveScore: '',
+      throwEleven: '',
+      throwTwelve: '',
+      frameSixScore: '',
+      throwThirteen: '',
+      throwFourteen: '',
+      frameSevenScore: '',
+      throwFifteen: '',
+      throwSixteen: '',
+      frameEightScore: '',
+      throwSeventeen: '',
+      throwEighteen: '',
+      frameNineScore: '',
+      throwNineteen: '',
+      throwTwenty: '',
+      throwTwentyOne: '',
+      frameTenScore: '',
+      finalRoundStrikeOne: '',
+      finalRoundStrikeTwo: '',
+      finalRoundStrikeThree: '',
     });
   }
 
   render() {
-    const { displayValue, score } = this.state;
     return (
       <>
         <GlobalStyle />
+        <h1>BOWLING</h1>
         <MainContainer>
-          <div>
-            <h1>
-              SCORE:
-              {' '}
-              {score}
-            </h1>
-          </div>
           <ButtonContainer>
-            <Input>
-              <input type="text" value={displayValue} onChange={this.onChange} placeholder="Enter Pin Quantity" className="form-control" />
-            </Input>
             <div className="btn-group-vertical" role="group">
-              <button type="button" className="btn btn-secondary" onClick={() => this.handleInputDigit(1)}>1</button>
-              <button type="button" className="btn btn-secondary" onClick={() => this.handleInputDigit(4)}>4</button>
-              <button type="button" className="btn btn-secondary" onClick={() => this.handleInputDigit(7)}>7</button>
+              <button type="button" className="btn btn-secondary" onClick={() => this.handleSubmit(1)}>1</button>
+              <button type="button" className="btn btn-secondary" onClick={() => this.handleSubmit(4)}>4</button>
+              <button type="button" className="btn btn-secondary" onClick={() => this.handleSubmit(7)}>7</button>
             </div>
             <div className="btn-group-vertical" role="group">
-              <button type="button" className="btn btn-secondary" onClick={() => this.handleInputDigit(2)}>2</button>
-              <button type="button" className="btn btn-secondary" onClick={() => this.handleInputDigit(5)}>5</button>
-              <button type="button" className="btn btn-secondary" onClick={() => this.handleInputDigit(8)}>8</button>
+              <button type="button" className="btn btn-secondary" onClick={() => this.handleSubmit(2)}>2</button>
+              <button type="button" className="btn btn-secondary" onClick={() => this.handleSubmit(5)}>5</button>
+              <button type="button" className="btn btn-secondary" onClick={() => this.handleSubmit(8)}>8</button>
             </div>
             <div className="btn-group-vertical" role="group">
-              <button type="button" className="btn btn-secondary" onClick={() => this.handleInputDigit(3)}>3</button>
-              <button type="button" className="btn btn-secondary" onClick={() => this.handleInputDigit(6)}>6</button>
-              <button type="button" className="btn btn-secondary" onClick={() => this.handleInputDigit(9)}>9</button>
+              <button type="button" className="btn btn-secondary" onClick={() => this.handleSubmit(3)}>3</button>
+              <button type="button" className="btn btn-secondary" onClick={() => this.handleSubmit(6)}>6</button>
+              <button type="button" className="btn btn-secondary" onClick={() => this.handleSubmit(9)}>9</button>
             </div>
             <div className="zeroth-button">
-              <button type="button" className="btn btn-secondary" style={{ width: '100%', padding: '10px' }} onClick={() => this.handleInputDigit(0)}>0</button>
+              <button type="button" className="btn btn-secondary" style={{ width: '100%', padding: '10px' }} onClick={() => this.handleSubmit(10)}>10</button>
             </div>
           </ButtonContainer>
-          <SecondaryContainer>
-            <div className="bowl-button">
-              <button type="button" className="btn btn-danger go-button" onClick={this.handleSubmit}>BOWL!</button>
-            </div>
-          </SecondaryContainer>
         </MainContainer>
         <ScoreContainer>
-          <Scorecard />
+          <button type="button" className="btn btn-secondary" onClick={this.handleNewGame}>New Game</button>
+          <Scorecard scores={this.state} />
         </ScoreContainer>
       </>
     );
