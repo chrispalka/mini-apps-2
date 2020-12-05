@@ -35,6 +35,7 @@ const Scorecard = ({
     throwNineteen,
     throwTwenty,
     throwTwentyOne,
+    name,
   },
 }) => (
     <table className="table table-bordered table-dark">
@@ -55,7 +56,7 @@ const Scorecard = ({
       </thead>
       <tbody>
         <tr>
-          <th scope="row">Player</th>
+          <th scope="row">{name}</th>
           <td>
             <td>{throwOne}</td>
             <td>{throwTwo}</td>
@@ -109,7 +110,7 @@ const Scorecard = ({
           <td>{frameSevenScore}</td>
           <td>{frameEightScore}</td>
           <td>{frameNineScore}</td>
-          <td>{frameTenScore}</td>
+          <td style={{ color: 'green', fontSize: '2rem', padding: '0px' }}>{frameTenScore}</td>
         </tr>
       </tbody>
     </table>

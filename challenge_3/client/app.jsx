@@ -31,6 +31,24 @@ const MainContainer = styled(Container)`
   width: 350px;
 `;
 
+const FormContainer = styled(Container)`
+  padding-top: 400px;
+  body {
+    background-color: slategrey;
+  }
+  width: 350px;
+  button {
+    background-color: #363d40;
+  }
+  button:hover {
+    background-color: hotpink;
+  }
+  .form-button {
+    padding-top: 5px;
+    text-align: center;
+  }
+`;
+
 const ScoreContainer = styled(Container)`
   text-align: center;
   margin: auto;
@@ -80,6 +98,8 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      name: '',
+      nameEntered: false,
       roundOne: 0,
       roundTwo: 0,
       roundThree: 0,
@@ -124,6 +144,8 @@ class App extends Component {
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleNewGame = this.handleNewGame.bind(this);
+    this.handleName = this.handleName.bind(this);
+    this.handleNameSubmit = this.handleNameSubmit.bind(this);
   }
 
   handleSubmit(digit) {
@@ -920,38 +942,72 @@ class App extends Component {
     });
   }
 
+  handleName(e) {
+    this.setState({
+      name: e.target.value,
+    });
+  }
+
+  handleNameSubmit() {
+    this.setState({
+      nameEntered: true,
+    });
+  }
+
   render() {
+    const { name, nameEntered } = this.state;
     return (
       <>
         <GlobalStyle />
-        <h1>BOWLING</h1>
-        <MainContainer>
-          <ButtonContainer>
-            <div className="btn-group-vertical" role="group">
-              <button type="button" className="btn btn-secondary" onClick={() => this.handleSubmit(1)}>1</button>
-              <button type="button" className="btn btn-secondary" onClick={() => this.handleSubmit(4)}>4</button>
-              <button type="button" className="btn btn-secondary" onClick={() => this.handleSubmit(7)}>7</button>
-            </div>
-            <div className="btn-group-vertical" role="group">
-              <button type="button" className="btn btn-secondary" onClick={() => this.handleSubmit(2)}>2</button>
-              <button type="button" className="btn btn-secondary" onClick={() => this.handleSubmit(5)}>5</button>
-              <button type="button" className="btn btn-secondary" onClick={() => this.handleSubmit(8)}>8</button>
-            </div>
-            <div className="btn-group-vertical" role="group">
-              <button type="button" className="btn btn-secondary" onClick={() => this.handleSubmit(3)}>3</button>
-              <button type="button" className="btn btn-secondary" onClick={() => this.handleSubmit(6)}>6</button>
-              <button type="button" className="btn btn-secondary" onClick={() => this.handleSubmit(9)}>9</button>
-            </div>
-            <div className="zeroth-button">
-              <button type="button" className="btn btn-secondary" style={{ width: '100%', padding: '10px' }} onClick={() => this.handleSubmit(10)}>10</button>
-            </div>
-          </ButtonContainer>
-        </MainContainer>
-        <ScoreContainer>
-          <button type="button" className="btn btn-secondary" onClick={this.handleNewGame}>New Game</button>
-          <Scorecard scores={this.state} />
-        </ScoreContainer>
+        {
+          nameEntered === false ? (
+            <FormContainer>
+              <form>
+                <div className="form-row">
+                  <div className="col">
+                    <input type="text" value={name} onChange={this.handleName} className="form-control" placeholder="Enter Name" />
+                  </div>
+                </div>
+                <div className="form-button">
+                  <button type="submit" className="btn btn-secondary" onClick={this.handleNameSubmit}>START</button>
+                </div>
+              </form>
+            </FormContainer>
+          )
+            : (
+              <>
+                <h1>BOWLING</h1>
+                <MainContainer>
+                  <ButtonContainer>
+                    <div className="btn-group-vertical" role="group">
+                      <button type="button" className="btn btn-secondary" onClick={() => this.handleSubmit(1)}>1</button>
+                      <button type="button" className="btn btn-secondary" onClick={() => this.handleSubmit(4)}>4</button>
+                      <button type="button" className="btn btn-secondary" onClick={() => this.handleSubmit(7)}>7</button>
+                    </div>
+                    <div className="btn-group-vertical" role="group">
+                      <button type="button" className="btn btn-secondary" onClick={() => this.handleSubmit(2)}>2</button>
+                      <button type="button" className="btn btn-secondary" onClick={() => this.handleSubmit(5)}>5</button>
+                      <button type="button" className="btn btn-secondary" onClick={() => this.handleSubmit(8)}>8</button>
+                    </div>
+                    <div className="btn-group-vertical" role="group">
+                      <button type="button" className="btn btn-secondary" onClick={() => this.handleSubmit(3)}>3</button>
+                      <button type="button" className="btn btn-secondary" onClick={() => this.handleSubmit(6)}>6</button>
+                      <button type="button" className="btn btn-secondary" onClick={() => this.handleSubmit(9)}>9</button>
+                    </div>
+                    <div className="zeroth-button">
+                      <button type="button" className="btn btn-secondary" style={{ width: '100%', padding: '10px' }} onClick={() => this.handleSubmit(10)}>10</button>
+                    </div>
+                  </ButtonContainer>
+                </MainContainer>
+                <ScoreContainer>
+                  <button type="button" className="btn btn-secondary" onClick={this.handleNewGame}>New Game</button>
+                  <Scorecard scores={this.state} />
+                </ScoreContainer>
+              </>
+            )
+        }
       </>
+
     );
   }
 }
