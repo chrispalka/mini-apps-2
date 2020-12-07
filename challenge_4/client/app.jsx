@@ -3,17 +3,20 @@ import ReactDOM from 'react-dom';
 import styled, { createGlobalStyle } from 'styled-components';
 import Container from 'react-bootstrap/Container';
 import 'bootstrap/dist/css/bootstrap.min.css';
-
 import boardBuilder from '../modules/boardBuilder';
+import Board from './components/board';
+
+import 'typeface-jetbrains-mono';
 
 const GlobalStyle = createGlobalStyle`
   body {
-    background-color: slategray;
+    background-color: black;
+    font-family: 'Jetbrains Mono';
   }
 `;
 
 const Input = styled(Container)`
-  padding-top: 30rem;
+  padding-top: 15rem;
   text-align: center;
   margin: auto;
 `;
@@ -28,6 +31,9 @@ const MainContainer = styled(Container)`
   padding-top: 3rem;
   text-align: center;
   margin: auto;
+  h2 {
+    color: #39ff14;
+  }
 `;
 
 class App extends Component {
@@ -61,6 +67,9 @@ class App extends Component {
     return (
       <>
         <GlobalStyle />
+        <MainContainer>
+          <h2>Minesweeper</h2>
+        </MainContainer>
         {
           gameStart === false ? (
             <>
@@ -74,8 +83,7 @@ class App extends Component {
           )
             : (
               <MainContainer>
-                <h1>{playerName}</h1>
-                {board}
+                <Board board={board} />
               </MainContainer>
             )
         }
