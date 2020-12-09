@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
+import { Provider } from 'react-redux';
 import styled, { createGlobalStyle } from 'styled-components';
 import Container from 'react-bootstrap/Container';
+import store from './store';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import boardBuilder from '../modules/boardBuilder';
 import Board from './components/board';
@@ -93,6 +95,8 @@ class App extends Component {
 }
 
 ReactDOM.render(
-  <App />,
+  <Provider store={store}>
+    <App />
+  </Provider>,
   document.getElementById('app'),
 );
