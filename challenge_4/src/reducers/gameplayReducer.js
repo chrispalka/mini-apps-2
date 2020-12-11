@@ -25,3 +25,14 @@ const slice = createSlice({
 export const gameReducer = slice.reducer;
 
 export const { toggleOpen, toggleFlag, toggleGuess } = slice.actions;
+
+export const toggler = (e) => (dispatch) => {
+  console.log(e);
+  e.preventDefault();
+  if (e.type === 'click') {
+    console.log('Left Click');
+  } else if (e.type === 'contextmenu') {
+    console.log('Right Click');
+  }
+  // dispatch(toggleOpen());
+};

@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import Container from 'react-bootstrap/Container';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useDispatch } from 'react-redux';
-import { toggleOpen, toggleFlag, toggleGuess } from '../reducers/gameplayReducer';
+import { toggleOpen, toggleFlag, toggleGuess, toggler } from '../reducers/gameplayReducer';
 
 const BoardGrid = styled(Container)`
 padding-top: 6rem;
@@ -19,7 +19,6 @@ table.table-bordered > tbody > tr > td {
 
 const Board = ({ board }) => {
   const dispatch = useDispatch();
-
   return (
     <BoardGrid>
       <table className="table table-bordered table-dark">
@@ -27,14 +26,14 @@ const Board = ({ board }) => {
           {board.map(() => (
             <tr>
               {board.map(() => (
-                <td id="square" onClick={() => dispatch(toggleGuess())} />
+                <td id="square" onClick={(e) => dispatch(toggler(e))} onContextMenu={(e) => dispatch(toggler(e))} />
               ))}
             </tr>
           ))}
         </tbody>
       </table>
     </BoardGrid>
-  )
+  );
 };
 // const Board = ({ board }) => (
 //   <BoardGrid>
