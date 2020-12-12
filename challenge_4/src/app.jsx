@@ -42,7 +42,7 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      board: [],
+      boardArray: [],
       gameStart: false,
       playerName: '',
     };
@@ -56,16 +56,22 @@ class App extends Component {
     });
   }
 
-  handleSubmit(size) {
-    const newBoard = boardBuilder(size);
+  handleSubmit(size, mines) {
+    const newBoard = boardBuilder(size, mines);
+    const keys = Object.keys(newBoard);
+    const result = new Array(Math.ceil(keys.length / 10))
+      .fill()
+      .map(() => keys.splice(0, 10));
     this.setState({
-      board: newBoard,
       gameStart: true,
+      boardArray: result,
     });
   }
 
   render() {
-    const { gameStart, board, playerName } = this.state;
+    const {
+      gameStart, playerName, boardArray,
+    } = this.state;
     return (
       <>
         <GlobalStyle />
@@ -79,13 +85,13 @@ class App extends Component {
                 <input type="text" value={playerName} onChange={this.handleOnChange} placeholder="Enter player name" />
               </Input>
               <ButtonContainer>
-                <button type="button" className="btn btn-primary" onClick={() => this.handleSubmit(9)}>Start</button>
+                <button type="button" className="btn btn-primary" onClick={() => this.handleSubmit(10, 10)}>Start</button>
               </ButtonContainer>
             </>
           )
             : (
               <MainContainer>
-                <Board board={board} />
+                <Board board={boardArray} />
               </MainContainer>
             )
         }
