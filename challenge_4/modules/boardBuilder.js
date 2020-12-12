@@ -94,8 +94,5 @@ const boardBuilder = (size, mines) => {
   board = calculateNeighboringMines(board, size);
   return board;
 };
-console.log(boardBuilder(10, 10));
 
-// console.log(randomNum(0, 7))
-
-// export default boardBuilder;
+export default boardBuilder;
