@@ -1,12 +1,13 @@
 /* eslint-disable no-console */
 const randomNum = (min, max) => Math.floor(Math.random() * (max - min) + min);
 
-const Cell = (row, col, opened, flagged, mined, neighboringMineCount) => ({
+const Cell = (row, col, opened, flagged, guess, mined, neighboringMineCount) => ({
   id: `${row}_${col}`,
   row,
   col,
   opened,
   flagged,
+  guess,
   mined,
   neighboringMineCount,
 });
@@ -87,7 +88,7 @@ const boardBuilder = (size, mines) => {
   let board = {};
   for (let row = 0; row < size; row += 1) {
     for (let col = 0; col < size; col += 1) {
-      board[`${row}_${col}`] = Cell(row, col, false, false, false, 0);
+      board[`${row}_${col}`] = Cell(row, col, false, false, false, false, 0);
     }
   }
   board = addMines(board, mines);

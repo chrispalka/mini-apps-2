@@ -6,7 +6,7 @@ import React from 'react';
 import styled from 'styled-components';
 import Container from 'react-bootstrap/Container';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { toggler } from '../reducers/gameplayReducer';
 
 const BoardGrid = styled(Container)`

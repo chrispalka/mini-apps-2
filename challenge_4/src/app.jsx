@@ -1,12 +1,12 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
-import { Provider } from 'react-redux';
+import { Provider, useSelector, useDispatch } from 'react-redux';
 import styled, { createGlobalStyle } from 'styled-components';
 import Container from 'react-bootstrap/Container';
 import store from './store';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import boardBuilder from '../modules/boardBuilder';
 import Board from './components/board';
+import { toggleGameStart } from './reducers/gameplayReducer';
 
 import 'typeface-jetbrains-mono';
 
@@ -38,67 +38,36 @@ const MainContainer = styled(Container)`
   }
 `;
 
-class App extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      boardArray: [],
-      gameStart: false,
-      playerName: '',
-    };
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleOnChange = this.handleOnChange.bind(this);
-  }
-
-  handleOnChange(e) {
-    this.setState({
-      playerName: e.target.value,
-    });
-  }
-
-  handleSubmit(size, mines) {
-    const newBoard = boardBuilder(size, mines);
-    const keys = Object.keys(newBoard);
-    const result = new Array(Math.ceil(keys.length / 10))
-      .fill()
-      .map(() => keys.splice(0, 10));
-    this.setState({
-      gameStart: true,
-      boardArray: result,
-    });
-  }
-
-  render() {
-    const {
-      gameStart, playerName, boardArray,
-    } = this.state;
-    return (
-      <>
-        <GlobalStyle />
-        <MainContainer>
-          <h2>Minesweeper</h2>
-        </MainContainer>
-        {
-          gameStart === false ? (
-            <>
-              <Input>
-                <input type="text" value={playerName} onChange={this.handleOnChange} placeholder="Enter player name" />
-              </Input>
-              <ButtonContainer>
-                <button type="button" className="btn btn-primary" onClick={() => this.handleSubmit(10, 10)}>Start</button>
-              </ButtonContainer>
-            </>
+const App = () => {
+  const [title, setTitle] = useState('');
+  const dispatch = useDispatch();
+  const { gameStart, boardArray } = useSelector((state) => state.gameReducer);
+  return (
+    <>
+      <GlobalStyle />
+      <MainContainer>
+        <h2>Minesweeper</h2>
+      </MainContainer>
+      {
+        gameStart === false ? (
+          <>
+            <Input>
+              <input type="text" id="player-name" onChange={(e) => setTitle(e.target.value)} placeholder="Enter player name" />
+            </Input>
+            <ButtonContainer>
+              <button type="button" className="btn btn-primary" onClick={() => dispatch(toggleGameStart(title))}>Start</button>
+            </ButtonContainer>
+          </>
+        )
+          : (
+            <MainContainer>
+              <Board board={boardArray} />
+            </MainContainer>
           )
-            : (
-              <MainContainer>
-                <Board board={boardArray} />
-              </MainContainer>
-            )
-        }
-      </>
-    );
-  }
-}
+      }
+    </>
+  );
+};
 
 ReactDOM.render(
   <Provider store={store}>
