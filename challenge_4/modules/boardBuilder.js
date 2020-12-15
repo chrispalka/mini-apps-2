@@ -39,7 +39,7 @@ const isMined = (board, id) => {
   return mined;
 };
 
-const getNeighbors = (id) => {
+export const getNeighbors = (id) => {
   const row = Number(id[0]);
   const col = Number(id[2]);
   const neighbors = [];
