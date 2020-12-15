@@ -29,7 +29,7 @@ const initialState = {
 const checkWin = (ids, board) => {
   for (let i = 0; i < ids.length; i += 1) {
     const currentId = ids[i];
-    if (board[currentId].mined && !(board[currentId].opened || board[currentId].flagged)) {
+    if (!board[currentId].mined && !board[currentId].opened) {
       return false;
     }
   }
@@ -64,19 +64,16 @@ const slice = createSlice({
         .fill()
         .map(() => keys.splice(0, 10));
       state.gameStart = true;
+      state.gameWin = false;
       state.boardArray = result;
     },
     toggleOpen: (state, action) => {
       const keys = Object.keys(state.board);
-      if (checkWin(keys, state.board)) {
-        state.gameWin = true;
-        console.log('YOU WIN!');
-      }
       const { board } = state;
       const { id } = state.board[action.payload];
       const handleLeftClick = (cellId) => {
         const cell = state.board[cellId];
-        if (!state.gameOver) {
+        if (!state.gameOver && !state.gameWin) {
           if (!cell.guess && !cell.flagged) {
             if (cell.mined) {
               state.gameOver = true;
@@ -96,13 +93,12 @@ const slice = createSlice({
         }
       };
       handleLeftClick(id);
-    },
-    toggleRightClick: (state, action) => {
-      const keys = Object.keys(state.board);
       if (checkWin(keys, state.board)) {
         state.gameWin = true;
         console.log('YOU WIN!');
       }
+    },
+    toggleRightClick: (state, action) => {
       if (!state.gameOver && !state.gameWin) {
         if (!state.board[action.payload].opened) {
           if (state.board[action.payload].flagged) {

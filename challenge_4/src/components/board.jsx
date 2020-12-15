@@ -45,16 +45,17 @@ const Board = ({ boardArray, name }) => {
   const {
     board,
     gameOver,
+    gameWin,
     totalMines,
   } = useSelector((state) => state.gameReducer);
   const [count, setCount] = useState(0);
   useEffect(() => {
-    if (!gameOver) {
+    if (!gameOver && !gameWin) {
       const timer = setInterval(() => setCount(count + 1), 1000);
       return () => clearInterval(timer);
     }
     return false;
-  }, [count, gameOver]);
+  }, [count, gameOver, gameWin]);
   return (
     <>
       <Stats>

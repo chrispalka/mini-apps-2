@@ -60,13 +60,14 @@ const App = () => {
     totalMines,
     playerName,
     gameOver,
+    gameWin,
   } = useSelector((state) => state.gameReducer);
 
   return (
     <>
       <GlobalStyle />
       <TitleContainer>
-        <h2>Minesweeper</h2>
+        <h2>{ gameWin ? 'You Win!' : gameOver ? 'You Lose!' : 'Minesweeper' }</h2>
       </TitleContainer>
       {
         gameStart === false ? (
