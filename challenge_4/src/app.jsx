@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 /* eslint-disable no-restricted-globals */
@@ -67,7 +68,15 @@ const App = () => {
     <>
       <GlobalStyle />
       <TitleContainer>
-        <h2>{ gameWin ? 'You Win!' : gameOver ? 'You Lose!' : 'Minesweeper' }</h2>
+        <h2>
+          {
+            gameWin
+              ? 'You Win!'
+              : gameOver
+                ? 'You Lose!'
+                : 'Minesweeper'
+          }
+        </h2>
       </TitleContainer>
       {
         gameStart === false ? (
