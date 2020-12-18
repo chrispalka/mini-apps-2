@@ -92,7 +92,7 @@ const App = () => {
           : (
             <MainContainer>
               <div className="smiley">
-                <img src={gameOver ? sadface : smileyface} style={{ width: '50px' }} alt="" onClick={() => dispatch(toggleNewGame(name))} />
+                <img src={gameOver ? sadface : smileyface} style={{ width: '50px' }} alt="" onClick={() => dispatch(toggleNewGame())} />
               </div>
               <Board boardArray={boardArray} name={playerName} mineCount={totalMines} />
             </MainContainer>
