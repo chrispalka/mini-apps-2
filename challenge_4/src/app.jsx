@@ -4,6 +4,7 @@
 /* eslint-disable no-restricted-globals */
 /* eslint-disable no-undef */
 import React, { useState } from 'react';
+import useSound from 'use-sound';
 import ReactDOM from 'react-dom';
 import { Provider, useSelector, useDispatch } from 'react-redux';
 import styled, { createGlobalStyle } from 'styled-components';
@@ -13,6 +14,9 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import sadface from '../assets/sadface.png';
 import smileyface from '../assets/smileyface.png';
 import Board from './components/board';
+import startSound from '../assets/start.mp3';
+import mineSound from '../assets/mine.mp3';
+
 import {
   toggleGameEasy,
   toggleGameMedium,
@@ -47,6 +51,9 @@ const MainContainer = styled(Container)`
   h2 {
     color: #39ff14;
   }
+  #sound-click {
+    display: inline-block;
+  }
   `;
 const TitleContainer = styled(Container)`
   padding-top: 3rem;
@@ -72,6 +79,8 @@ const GameModeButtonContainer = styled(Container)`
 
 const App = () => {
   const [title, setTitle] = useState('');
+  const [start] = useSound(startSound);
+  const [end] = useSound(mineSound, { volume: 0.30 });
   const dispatch = useDispatch();
   const {
     gameStart,
@@ -111,20 +120,22 @@ const App = () => {
           : (
             <MainContainer>
               <div className="smiley">
-                <img src={gameOver ? sadface : smileyface} style={{ width: '50px' }} alt="" onClick={() => dispatch(toggleNewGame())} />
+                <div id="sound-click" role="button" tabIndex="-1" onClick={gameOver || gameWin ? start : null}>
+                  <img onLoad={gameOver ? end : null} src={gameOver ? sadface : smileyface} style={{ width: '50px' }} alt="" onClick={() => dispatch(toggleNewGame(title))} />
+                </div>
               </div>
               <GameModeButtonContainer>
                 <table>
                   <tbody>
                     <tr>
                       <td>
-                        <button type="button" id="easy" className="btn btn-secondary game-mode" onClick={() => dispatch(toggleGameEasy())} disabled={difficulty === 'easy'}>Easy</button>
+                        <button type="button" id="easy" className="btn btn-secondary game-mode" onClick={() => dispatch(toggleGameEasy(title))} disabled={difficulty === 'easy'}>Easy</button>
                       </td>
                       <td>
-                        <button type="button" id="medium" className="btn btn-secondary game-mode" onClick={() => dispatch(toggleGameMedium())} disabled={difficulty === 'medium'}>Medium</button>
+                        <button type="button" id="medium" className="btn btn-secondary game-mode" onClick={() => dispatch(toggleGameMedium(title))} disabled={difficulty === 'medium'}>Medium</button>
                       </td>
                       <td>
-                        <button type="button" id="hard" className="btn btn-secondary game-mode" onClick={() => dispatch(toggleGameHard())} disabled={difficulty === 'hard'}>Hard</button>
+                        <button type="button" id="hard" className="btn btn-secondary game-mode" onClick={() => dispatch(toggleGameHard(title))} disabled={difficulty === 'hard'}>Hard</button>
                       </td>
                     </tr>
                   </tbody>

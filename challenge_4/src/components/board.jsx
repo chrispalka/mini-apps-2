@@ -54,8 +54,9 @@ const Board = ({ boardArray, name }) => {
       const timer = setInterval(() => setCount(count + 1), 1000);
       return () => clearInterval(timer);
     }
+    setCount(0);
     return false;
-  }, [count, gameOver, gameWin]);
+  }, [count, gameOver, gameWin, difficulty]);
   return (
     <>
       <Stats>

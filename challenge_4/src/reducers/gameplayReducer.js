@@ -87,7 +87,7 @@ const slice = createSlice({
       state.difficulty = 'hard';
     },
     toggleNewGame: (state) => {
-      if (state.gameOver) {
+      if (state.gameOver || state.gameWin) {
         const gameDifficulty = {
           easy: [10, 10],
           medium: [16, 40],

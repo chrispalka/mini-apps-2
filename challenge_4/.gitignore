@@ -1,3 +1,8 @@
 *.woff2
 *.woff
 public/bundle.js
+public/vendors-node_modules_howler_dist_howler_js.bundle.js
+
+Implement sound for new game and mine click
+  -adjust timer logic to reset on new game
+  -

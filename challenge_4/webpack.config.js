@@ -42,6 +42,14 @@ module.exports = {
           limit: 10000,
         },
       },
+      {
+        test: /\.mp3$/,
+        use: [
+          {
+            loader: 'file-loader',
+          },
+        ],
+      },
     ],
   },
   resolve: {
