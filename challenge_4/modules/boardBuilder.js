@@ -12,16 +12,16 @@ const Cell = (row, col, opened, flagged, guess, mined, neighboringMineCount) => 
   neighboringMineCount,
 });
 
-const addMines = (board, mines) => {
+const addMines = (board, mines, size) => {
   const mineCoordinates = [];
   const minedBoard = board;
   for (let i = 0; i < mines; i += 1) {
-    let randomRow = randomNum(0, 9);
-    let randomCol = randomNum(0, 9);
+    let randomRow = randomNum(0, size - 1);
+    let randomCol = randomNum(0, size - 1);
     let cell = `${randomRow}_${randomCol}`;
     while (mineCoordinates.includes(cell)) {
-      randomRow = randomNum(0, 9);
-      randomCol = randomNum(0, 9);
+      randomRow = randomNum(0, size - 1);
+      randomCol = randomNum(0, size - 1);
       cell = `${randomRow}_${randomCol}`;
     }
     mineCoordinates.push(cell);
@@ -40,8 +40,9 @@ const isMined = (board, id) => {
 };
 
 export const getNeighbors = (id) => {
-  const row = Number(id[0]);
-  const col = Number(id[2]);
+  const ids = id.split('_');
+  const row = Number(ids[0]);
+  const col = Number(ids[1]);
   const neighbors = [];
 
   neighbors.push(`${(row - 1)}_${col - 1}`);
@@ -54,7 +55,7 @@ export const getNeighbors = (id) => {
   neighbors.push(`${(row + 1)}_${col + 1}`);
 
   for (let i = 0; i < neighbors.length; i += 1) {
-    if (neighbors[i].length > 3) {
+    if (neighbors[i].length > 5) {
       neighbors.splice(i, 1);
       i -= 1;
     }
@@ -91,7 +92,7 @@ const boardBuilder = (size, mines) => {
       board[`${row}_${col}`] = Cell(row, col, false, false, false, false, 0);
     }
   }
-  board = addMines(board, mines);
+  board = addMines(board, mines, size);
   board = calculateNeighboringMines(board, size);
   return board;
 };

@@ -13,7 +13,12 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import sadface from '../assets/sadface.png';
 import smileyface from '../assets/smileyface.png';
 import Board from './components/board';
-import { toggleGameStart, toggleNewGame } from './reducers/gameplayReducer';
+import {
+  toggleGameEasy,
+  toggleGameMedium,
+  toggleGameHard,
+  toggleNewGame,
+} from './reducers/gameplayReducer';
 
 import 'typeface-jetbrains-mono';
 
@@ -42,7 +47,7 @@ const MainContainer = styled(Container)`
   h2 {
     color: #39ff14;
   }
-`;
+  `;
 const TitleContainer = styled(Container)`
   padding-top: 3rem;
   text-align: center;
@@ -50,6 +55,19 @@ const TitleContainer = styled(Container)`
   h2 {
     color: #39ff14;
   }
+  `;
+const GameModeButtonContainer = styled(Container)`
+  width: 350px;
+  table > tbody > tr > td {
+    padding: 0.5rem;
+  }
+  table {
+    margin: auto;
+  }
+  .game-mode {
+    background-color: #343B3F;
+  }
+  padding: 1rem;
 `;
 
 const App = () => {
@@ -62,6 +80,7 @@ const App = () => {
     playerName,
     gameOver,
     gameWin,
+    difficulty,
   } = useSelector((state) => state.gameReducer);
 
   return (
@@ -85,7 +104,7 @@ const App = () => {
               <input type="text" id="player-name" onChange={(e) => setTitle(e.target.value)} placeholder="Enter player name" />
             </Input>
             <ButtonContainer>
-              <button type="button" className="btn btn-primary" onClick={() => dispatch(toggleGameStart(title))}>Start</button>
+              <button type="button" className="btn btn-primary" onClick={() => dispatch(toggleGameEasy(title))}>Start</button>
             </ButtonContainer>
           </>
         )
@@ -94,6 +113,23 @@ const App = () => {
               <div className="smiley">
                 <img src={gameOver ? sadface : smileyface} style={{ width: '50px' }} alt="" onClick={() => dispatch(toggleNewGame())} />
               </div>
+              <GameModeButtonContainer>
+                <table>
+                  <tbody>
+                    <tr>
+                      <td>
+                        <button type="button" id="easy" className="btn btn-secondary game-mode" onClick={() => dispatch(toggleGameEasy())} disabled={difficulty === 'easy'}>Easy</button>
+                      </td>
+                      <td>
+                        <button type="button" id="medium" className="btn btn-secondary game-mode" onClick={() => dispatch(toggleGameMedium())} disabled={difficulty === 'medium'}>Medium</button>
+                      </td>
+                      <td>
+                        <button type="button" id="hard" className="btn btn-secondary game-mode" onClick={() => dispatch(toggleGameHard())} disabled={difficulty === 'hard'}>Hard</button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </GameModeButtonContainer>
               <Board boardArray={boardArray} name={playerName} mineCount={totalMines} />
             </MainContainer>
           )

@@ -14,18 +14,17 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { toggler } from '../reducers/gameplayReducer';
 
 const BoardGrid = styled(Container)`
-width: 350px;
-table.table-bordered > tbody > tr > td {
-  height: 2rem;
-  width: 2rem;
-  padding: 2px;
+  width: ${(props) => props.size};
+  table.table-bordered > tbody > tr > td {
+    height: 2rem;
+    width: 2rem;
+    padding: 2px;
 }
 `;
 
 const Stats = styled(Container)`
   width: 350px;
   text-align: center;
-  padding-top: 1rem;
   margin: auto;
 `;
 
@@ -47,6 +46,7 @@ const Board = ({ boardArray, name }) => {
     gameOver,
     gameWin,
     totalMines,
+    difficulty,
   } = useSelector((state) => state.gameReducer);
   const [count, setCount] = useState(0);
   useEffect(() => {
@@ -76,7 +76,7 @@ const Board = ({ boardArray, name }) => {
           </tbody>
         </table>
       </Stats>
-      <BoardGrid>
+      <BoardGrid size={difficulty === 'easy' ? '350px' : difficulty === 'medium' ? '550px' : '950px'}>
         <table className="table table-bordered table-dark">
           <tbody id="square">
             {boardArray.map((x, i) => (

@@ -24,6 +24,7 @@ const initialState = {
   boardArray: [],
   playerName: '',
   totalMines: 0,
+  difficulty: 'easy',
 };
 
 const checkWin = (ids, board) => {
@@ -40,7 +41,7 @@ const slice = createSlice({
   name: 'move',
   initialState,
   reducers: {
-    toggleGameStart: (state, action) => {
+    toggleGameEasy: (state, action) => {
       const board = boardBuilder(10, 10);
       const mineTotal = mineCount(board);
       state.board = board;
@@ -50,22 +51,63 @@ const slice = createSlice({
         .fill()
         .map(() => keys.splice(0, 10));
       state.gameStart = true;
+      state.gameOver = false;
       state.boardArray = result;
       state.playerName = action.payload;
+      state.difficulty = 'easy';
     },
-    toggleNewGame: (state) => {
-      state.gameOver = false;
-      const board = boardBuilder(10, 10);
+    toggleGameMedium: (state, action) => {
+      const board = boardBuilder(16, 40);
       const mineTotal = mineCount(board);
       state.board = board;
       state.totalMines = mineTotal;
       const keys = Object.keys(state.board);
-      const result = new Array(Math.ceil(keys.length / 10))
+      const result = new Array(Math.ceil(keys.length / 16))
         .fill()
-        .map(() => keys.splice(0, 10));
+        .map(() => keys.splice(0, 16));
       state.gameStart = true;
-      state.gameWin = false;
+      state.gameOver = false;
       state.boardArray = result;
+      state.playerName = action.payload;
+      state.difficulty = 'medium';
+    },
+    toggleGameHard: (state, action) => {
+      const board = boardBuilder(30, 99);
+      const mineTotal = mineCount(board);
+      state.board = board;
+      state.totalMines = mineTotal;
+      const keys = Object.keys(state.board);
+      const result = new Array(Math.ceil(keys.length / 30))
+        .fill()
+        .map(() => keys.splice(0, 30));
+      state.gameStart = true;
+      state.gameOver = false;
+      state.boardArray = result;
+      state.playerName = action.payload;
+      state.difficulty = 'hard';
+    },
+    toggleNewGame: (state) => {
+      if (state.gameOver) {
+        const gameDifficulty = {
+          easy: [10, 10],
+          medium: [16, 40],
+          hard: [30, 99],
+        };
+        const size = gameDifficulty[state.difficulty][0];
+        const mines = gameDifficulty[state.difficulty][1];
+        state.gameOver = false;
+        const board = boardBuilder(size, mines);
+        const mineTotal = mineCount(board);
+        state.board = board;
+        state.totalMines = mineTotal;
+        const keys = Object.keys(state.board);
+        const result = new Array(Math.ceil(keys.length / size))
+          .fill()
+          .map(() => keys.splice(0, size));
+        state.gameStart = true;
+        state.gameWin = false;
+        state.boardArray = result;
+      }
     },
     toggleOpen: (state, action) => {
       const keys = Object.keys(state.board);
@@ -123,7 +165,9 @@ export const {
   toggleOpen,
   toggleRightClick,
   toggleGuess,
-  toggleGameStart,
+  toggleGameEasy,
+  toggleGameMedium,
+  toggleGameHard,
   toggleNewGame,
 } = slice.actions;
 
